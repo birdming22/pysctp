@@ -833,8 +833,10 @@ static PyObject* get_events(PyObject* dummy, PyObject* args)
 {
 	PyObject* ret = 0;
 	int fd;
+        char padding[4]; // Happily overflowing here...
 	struct sctp_event_subscribe v;
-	socklen_t lv = sizeof(v);
+	//socklen_t lv = sizeof(v);
+        socklen_t lv = 10; // Come to think of it, it could have been 9 at some point
 
 	if (PyArg_ParseTuple(args, "i", &fd)) {
 		if (getsockopt(fd, SOL_SCTP, SCTP_EVENTS, &v, &lv)) {
